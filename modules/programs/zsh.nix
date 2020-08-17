@@ -283,6 +283,12 @@ in
         description = "Extra commands that should be added to <filename>.zshrc</filename>.";
       };
 
+      initExtraFirst = mkOption {
+        default = "";
+        type = types.lines;
+        description = "Commands that should be added to top of <filename>.zshrc</filename>.";
+      };
+
       envExtra = mkOption {
         default = "";
         type = types.lines;
@@ -398,6 +404,8 @@ in
         ++ optional cfg.oh-my-zsh.enable oh-my-zsh;
 
       home.file."${relToDotDir ".zshrc"}".text = ''
+        ${cfg.initExtraFirst}
+
         typeset -U path cdpath fpath manpath
 
         ${optionalString (cfg.cdpath != []) ''
